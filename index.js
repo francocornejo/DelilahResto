@@ -23,7 +23,9 @@ const db = {}
     db.pedidos = require('./pedidos.models')(sequelize, DataTypes);
     db.usuarios = require('./usuarios.models')(sequelize, DataTypes)
     
-    //FALTA relaciones entre las bases
+    //Relaciones entre las bases
+    db.pedidos.belongsToMany(db.productos, { through: "pedidosProductos" })
+    db.productos.belongsToMany(db.pedidos, { through: "pedidosProductos" })
 
 
 module.exports = db
