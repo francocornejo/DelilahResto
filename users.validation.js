@@ -13,7 +13,7 @@ const validations = {
         catch(err) {
             res.status(401).json({
                 isSuccess: false,
-                error: 'No se reconoce el usuario' + err
+                error: 'No se reconoce el usuario' + ' ' + err
             })
         }
     },
