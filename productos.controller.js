@@ -1,61 +1,11 @@
-const { productos } = require('../models')
+const { productos } = require('../models/index')
 const db = require('../models/index')
 
-const productosController = {
-    createProductos: async (req, res) => {
-        const productos = db.usuarios.build({
-            nombre: req.body.nombre, precio: req.body.precio, descripcion: req.body.descripcion
-        })
-        if(!productos.validate()) {
-            res.status(400).json()
-        }
-        try {
-            await productos.save()
-            res.status(201).json()
-        }
-        catch(error) {
-            res.status(500).json({
-                isSuccess: false,
-                error: error
-            })
-        }
-    },
-    
-    getProductos: async (req, res) =>{
-        let productos = await db.productos.findAll()
-        if(productos.length > 0 )
-            res.json(productos)
-        else
-            res.status(204).json()
-    },
-
-
-    getById: (req, res) => {
-
-    },
-
-    updateProductos: (req, res) =>{
-
-    },
-
-    deleteProductos: (req, res) =>{
-
-    }
-}
-
-module.exports = productosController
-
-
-
-
-const { productos } = require('../models/index');
-const db = require('../models/index');
 const productosController = {
     //Create action
     createProductos: async (req, res) => {
         let newProduct = req.body
-        const productos = db.productos.build({nombre: req.body.nombre, precio: req.body.precio, descripcion: req.body.descripcion   
-        })
+        const productos = db.productos.build({ nombre: req.body.nombre, precio: req.body.precio, descripcion: req.body.descripcion })
         if(!productos.validate()){
             res.status(400).json();
         }
@@ -112,11 +62,12 @@ const productosController = {
             where: {
                 id: req.params.id
             }
-        }),
-        if(producto == null)
+        })
+        if (producto == null)
             res.status(404).json();
         await producto.destroy()
+        res.status(204).json()
     }
 }
-const productos = []
+//const productos = []
 module.exports = productosController
