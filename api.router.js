@@ -15,15 +15,11 @@ router.get('/productos/:id', userValidation.isAuthorized, productosController.ge
 router.put('/productos/:id', userValidation.isAuthorized, userValidation.isAdmin, productosController.updateProduct)
 router.delete('/productos/:id', userValidation.isAuthorized, userValidation.isAdmin, productosController.deleteProduct)
 
-router.post('/pedidos', userValidation.isAuthorized, pedidosController.createPedidos)
-
-
-/* PUSE ESTO ACA PARA IR REVISANDO UNO POR UNO, PARA VER SI ERA ERROR DE TIPEO
+//pedidos
 router.post('/pedidos', userValidation.isAuthorized, pedidosController.createPedidos)
 router.get('/pedidos', userValidation.isAuthorized, userValidation.isAdmin, pedidosController.getPedidos)
 router.get('/pedidos/:id', userValidation.isAuthorized, userValidation.isAdmin, pedidosController.getPedidoById)
 router.put('/pedidos/:id', userValidation.isAuthorized, userValidation.isAdmin, pedidosController.updatePedido)
 router.delete('/pedidos/:id', userValidation.isAuthorized, userValidation.isAdmin, pedidosController.deletePedido)
-*/
 
 module.exports = router
