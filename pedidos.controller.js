@@ -1,8 +1,4 @@
-const { response, request } = require('express')
-const { pedidos } = require('../models');
 const db = require('../models/index');
-​
-​
 const pedidosController = {
     //Create action  
     createPedidos: async (req, res) => {
@@ -60,19 +56,36 @@ const pedidosController = {
     //Update action
     updatePedido: async (req, res) => {
         let pedido = await db.pedidos.findOne({
-            where:{
+            where: {
                 id: req.params.id
             }
         })
-        if(pedido == null){
-            res.status(404).json()
+        if (pedido == null) {
+            res.status(400).json({
+                isSuccess: false,
+                error: " Pedido inexistente"
+            });
+            return
+        }
+        try {
             await pedido.update({
-                estado: req.body.estado, 
-                total: req.body.total, 
+                estado: req.body.estado,
+                total: req.body.total,
                 formaDePago: req.body.formaDePago,
                 direccion: req.body.direccion
             })
-            res.status(204).json()
+            var productos = req.body.productos.map(element => {
+                return parseInt(element.id)
+            })
+            await pedido.setProductos(productos)
+            res.status(204).json();
+            console.log(pedido)
+        }
+        catch (error) {
+            res.status(500).json({
+                isSuccess: false,
+                error: error
+            })
         }
     },
     //Delete action
@@ -85,32 +98,8 @@ const pedidosController = {
         if (pedido == null)
             res.status(404).json();
         await pedido.destroy()
-        //res.status(204).json()
+        res.status(204).json()
     }
 }
-​
 module.exports = pedidosController
-
-/*  //Create action
-    /*createPedidos: async (req, res) => {
-        const pedidos = db.pedidos.build({
-            estado: req.body.estado, 
-            total: req.body.total, 
-            formaDePago: req.body.formaDePago,
-            direccion: req.body.direccion
-        })
-        if(!pedidos.validate()){
-            res.status(400).json();
-        }
-        try{
-            await pedidos.save()
-            res.status(201).json();
-        }
-        catch(error){
-            res.status(500).json({
-                isSucces: false,
-                error: error
-            })
-        }
-    },*/
     
